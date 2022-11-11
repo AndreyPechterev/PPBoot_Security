@@ -24,14 +24,14 @@ public class UserBuilder implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Role role_admin = new Role("ROLE_ADMIN");
-        Role role_user = new Role("ROLE_USER");
-
-        User user = new User("andrey", "$2a$12$5PZjnRHaJ/BIF6BGE3KA4ep0DGiFogdkhozNzCYJIlQDbB8HGhnLa", "pechterev", "andrey@mail.ru", 24, Collections.singletonList(role_user));
-
-        User admin = new User("kostya", "$2a$12$5PZjnRHaJ/BIF6BGE3KA4ep0DGiFogdkhozNzCYJIlQDbB8HGhnLa", "pechterev", "kostya@mail.ru", 24, Collections.singletonList(role_admin));
-        entityManager.persist(user);
-        entityManager.persist(admin);
+//        Role role_admin = new Role("ROLE_ADMIN");
+//        Role role_user = new Role("ROLE_USER");
+//
+//        User user = new User("andrey", "$2a$12$5PZjnRHaJ/BIF6BGE3KA4ep0DGiFogdkhozNzCYJIlQDbB8HGhnLa", "pechterev", "andrey@mail.ru", 24, Collections.singletonList(role_user));
+//
+//        User admin = new User("kostya", "$2a$12$5PZjnRHaJ/BIF6BGE3KA4ep0DGiFogdkhozNzCYJIlQDbB8HGhnLa", "pechterev", "kostya@mail.ru", 24, Collections.singletonList(role_admin));
+//        entityManager.persist(user);
+//        entityManager.persist(admin);
     }
 
 
