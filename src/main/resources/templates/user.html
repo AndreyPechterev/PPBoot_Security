@@ -11,6 +11,7 @@
         <th scope="col">Surname</th>
         <th scope="col">Age</th>
         <th scope="col">Email</th>
+        <th scope="col">Role</th>
     </tr>
     </thead>
     <tbody>
@@ -19,6 +20,11 @@
         <td th:text="${user.getSurname()}"/>
         <td th:text="${user.getAge()}"/>
         <td th:text="${user.getEmail()}"/>
+        <td>
+            <th:block th:each="msg : ${user.getRolesOfUser()}">
+                <div th:text="${msg.getNoPrefix()}"> </div>
+            </th:block>
+        </td>
     </tr>
     </tbody>
 </table>

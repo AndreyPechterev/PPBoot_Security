@@ -14,13 +14,19 @@
         <th>Фамилия</th>
         <th>Почта</th>
         <th>Возраст</th>
+        <th>Роль</th>
         <th>Редактирование</th>
     </tr>
     <tr th:each="user : ${users}" align="center">
-        <td  th:utext="${user.username}"></td>
+        <td th:utext="${user.username}"></td>
         <td th:utext="${user.surname}"></td>
         <td th:utext="${user.email}"></td>
         <td th:utext="${user.age}"></td>
+        <td>
+            <th:block th:each="msg : ${user.getRolesOfUser()}">
+                <div th:text="${msg.getNoPrefix()}"> </div>
+            </th:block>
+        </td>
         <td class="buttons">
         <form class="button1"  th:action="@{/admin/{id}/edit(id=${user.id})}">
             <input type="submit" value="Update"/>

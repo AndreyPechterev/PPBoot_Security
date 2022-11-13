@@ -4,11 +4,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -35,18 +34,18 @@ public class User implements UserDetails {
     @Column(name = "age")
     private int age;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Collection<Role> roles;
+    private List<Role> roles;
 
     public User() {
     }
 
-    public User(String username, String password, String surname, String email, int age, Collection<Role> roles) {
+    public User(String username, String password, String surname, String email, int age, List<Role> roles) {
         this.username = username;
         this.password = password;
         this.surname = surname;
@@ -56,16 +55,16 @@ public class User implements UserDetails {
     }
 
 
-    public Collection<Role> getRolesOfUser() {
+    public List<Role> getRolesOfUser() {
         return roles;
     }
 
-    public void setRolesOfUser(Collection<Role> roles) {
+    public void setRolesOfUser(List<Role> roles) {
         this.roles = roles;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public List<? extends GrantedAuthority> getAuthorities() {
         return getRolesOfUser();
     }
 
@@ -137,5 +136,31 @@ public class User implements UserDetails {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(surname, user.surname) && Objects.equals(email, user.email) && Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, surname, email, age, roles);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", roles=" + roles +
+                '}';
     }
 }
