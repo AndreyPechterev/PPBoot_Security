@@ -10,17 +10,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
-import javax.transaction.Transactional;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserDetailsService, UserService {
     private UserDao userDao;
     private PasswordEncoder passwordEncoder;
@@ -56,6 +57,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return userDao.findAll();
     }
 
+    @Transactional
     public void saveUser(User user) {
         user.setRolesOfUser(Collections.singletonList(new Role("ROLE_USER")));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -63,7 +65,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
 
-
+    @Transactional
     public void changeUser(Long id, User user) {
         User newUser = userDao.findById(id).get();
         newUser.setAge(user.getAge());
@@ -73,7 +75,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 
-
+    @Transactional
     public void deleteUser(Long id) {
         userDao.deleteById(id);
     }
