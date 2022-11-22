@@ -130,7 +130,7 @@
                                                 <!--  Modal edit-->
 
                                                 <div class="modal fade" th:id="${'edit'+user.id}" tabindex="-1" aria-hidden="true">
-                                                    <form th:action="@{/admin/{id}(id=${user.id})}" th:method="patch" th:object="${user}" >
+                                                    <form th:action="@{/admin/{id}(id=${user.id})}" th:method="patch">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -167,11 +167,10 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label  class="d-flex justify-content-center mb-0 font-weight-bold">Role</label>
-                                                                            <select   class="form-control form-control-sm w-50 mx-auto"  th:name="roles"  size="2" >
-                                                                                <option th:each="role : ${roleList}"
-                                                                                        th:text="${role.getNoPrefix()}"
-                                                                                        th:value="${role.getId()}"
-                                                                                        >
+                                                                            <select required class="form-control form-control-sm w-50 mx-auto"  th:name="roles"  size="2" >
+                                                                                <option  th:each="role : ${roleList}"
+                                                                                         th:text="${role.getNoPrefix()}"
+                                                                                         th:value="${role.getId()}">
                                                                                 </option>
 <!--                                                                               <option>ADMIN</option>-->
 <!--                                                                                <option>USER</option>-->
@@ -278,7 +277,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="role" class="d-flex justify-content-center mb-0 font-weight-bold">Role</label>
-                                    <select multiple class="form-control form-control-sm w-25 mx-auto" id="role" th:field="*{roles}"  size="2" >
+                                    <select required multiple class="form-control form-control-sm w-25 mx-auto" id="role" th:field="*{roles}"  size="2" >
 
                                         <option th:each="role : ${roleList}"
                                                 th:text="${role.getNoPrefix()}"

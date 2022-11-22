@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,11 +50,11 @@ public class AdminController {
         return "admin";
     }
 
-    @GetMapping("/new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        return "new";
-    }
+//    @GetMapping("/new")
+//    public String newUser(Model model) {
+//        model.addAttribute("user", new User());
+//        return "new";
+//    }
 
     @PostMapping()
     public String createUser(@ModelAttribute("user") User user) {
@@ -60,15 +62,16 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/{id}/edit")
-    public String editUser(Model model,@PathVariable("id") Long id) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "edit";
-
-    }
+//    @GetMapping("/{id}/edit")
+//    public String editUser(Model model,@PathVariable("id") Long id) {
+//        model.addAttribute("user", userService.getUserById(id));
+//        return "edit";
+//
+//    }
 
     @PatchMapping("/{id}")
-    public String update( User user, @PathVariable("id") Long id) {
+//  public String update( User user, @PathVariable("id") Long id) {
+    public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
         userService.changeUser(id, user);
         return "redirect:/admin";
     }
