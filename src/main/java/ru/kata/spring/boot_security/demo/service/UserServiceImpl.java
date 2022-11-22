@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User %s not found",username));
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(), mapRolesToAuthorities(user.getRolesOfUser()));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     public Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     public void saveUser(User user) {
-        user.setRolesOfUser(Collections.singletonList(new Role("ROLE_USER")));
+//        user.setRoles(Collections.singletonList(new Role("ROLE_USER")));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
@@ -70,7 +70,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         newUser.setEmail(user.getEmail());
         newUser.setUsername(user.getUsername());
         newUser.setSurname(user.getSurname());
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setRoles(user.getRoles());
+        if(!newUser.getPassword().equals(user.getPassword())) {
+            newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            newUser.setPassword(user.getPassword());
+        }
+
     }
 
 

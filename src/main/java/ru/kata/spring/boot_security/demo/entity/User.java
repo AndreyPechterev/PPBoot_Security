@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @Column(name = "age")
     private int age;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -43,6 +43,15 @@ public class User implements UserDetails {
     private List<Role> roles;
 
     public User() {
+    }
+
+    public User(String username, String password, String surname, String email, int age) {
+        this.username = username;
+        this.password = password;
+        this.surname = surname;
+        this.email = email;
+        this.age = age;
+
     }
 
     public User(String username, String password, String surname, String email, int age, List<Role> roles) {
@@ -55,17 +64,17 @@ public class User implements UserDetails {
     }
 
 
-    public List<Role> getRolesOfUser() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRolesOfUser(List<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
     @Override
     public List<? extends GrantedAuthority> getAuthorities() {
-        return getRolesOfUser();
+        return getRoles();
     }
 
     public String getPassword() {
