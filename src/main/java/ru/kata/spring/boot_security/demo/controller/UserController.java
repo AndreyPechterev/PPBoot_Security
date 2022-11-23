@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class UserController {
 
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
-    @Autowired
+
     public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }

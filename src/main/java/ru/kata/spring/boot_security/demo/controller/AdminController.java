@@ -13,32 +13,21 @@ import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
-    private UserServiceImpl userService;
-    private RoleServiceImpl roleService;
+    private final UserServiceImpl userService;
+    private final RoleServiceImpl roleService;
 
-    @Autowired
+
     public AdminController(UserServiceImpl userService, RoleServiceImpl roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
-//    @RequestMapping("/login")
-//    public String getLogin() {
-//        return "login";
-//    }
-
-
-//
     @GetMapping()
     public String showAllUsers(Model model) {
         User user = userService.getAuthUser();
@@ -50,27 +39,13 @@ public class AdminController {
         return "admin";
     }
 
-//    @GetMapping("/new")
-//    public String newUser(Model model) {
-//        model.addAttribute("user", new User());
-//        return "new";
-//    }
-
     @PostMapping()
     public String createUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
-//    @GetMapping("/{id}/edit")
-//    public String editUser(Model model,@PathVariable("id") Long id) {
-//        model.addAttribute("user", userService.getUserById(id));
-//        return "edit";
-//
-//    }
-
     @PatchMapping("/{id}")
-//  public String update( User user, @PathVariable("id") Long id) {
     public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
         userService.changeUser(id, user);
         return "redirect:/admin";

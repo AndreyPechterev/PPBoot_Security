@@ -11,19 +11,18 @@ import java.util.List;
 public interface UserService {
 
     User findByUsername(String username);
-    User getUserById(Long id);
 
     void deleteUser(Long id);
 
     void changeUser(Long id, User user);
 
     void saveUser(User user);
+
     List<User> getAllUsers();
+
     User getAuthUser();
 
     Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles);
-
-
 
 
 }

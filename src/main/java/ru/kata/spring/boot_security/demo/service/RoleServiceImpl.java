@@ -16,18 +16,11 @@ public class RoleServiceImpl implements RoleService {
 
     @PersistenceContext
     private EntityManager entityManager;
-    private RoleDao roleDao;
+    private final RoleDao roleDao;
 
     public RoleServiceImpl(RoleDao roleDao) {
         this.roleDao = roleDao;
     }
-
-//    public List<Role> listByName(List<String> name) {
-//        return entityManager.createQuery("select u from Role u where u.name in (:name)", Role.class)
-//                .setParameter("name", name)
-//                .getResultList();
-//    }
-
 
     public Role getRoleByName(String name) {
         return roleDao.findByName(name);

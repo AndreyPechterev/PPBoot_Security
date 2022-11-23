@@ -117,8 +117,12 @@
                                                 <td th:utext="${user.surname}"></td>
                                                 <td th:utext="${user.age}"></td>
                                                 <td th:utext="${user.email}"></td>
-                                                <td th:each="roles : ${user.roles}">
-                                                    <span th:text="${roles.getNoPrefix()+' '}"></span>
+                                                <td>
+                                                    <th:block th:each="role : ${user.roles}">
+                                                        <span th:text="${role.getNoPrefix()}"></span>
+                                                    </th:block>
+
+
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-info"  data-toggle="modal" th:href="${'#edit'+user.id}">edit</button>
@@ -170,10 +174,9 @@
                                                                             <select required class="form-control form-control-sm w-50 mx-auto"  th:name="roles"  size="2" >
                                                                                 <option  th:each="role : ${roleList}"
                                                                                          th:text="${role.getNoPrefix()}"
-                                                                                         th:value="${role.getId()}">
+                                                                                         th:value="${role.getId()}"
+                                                                                            th:selected="${user.roles.contains(role)}">
                                                                                 </option>
-<!--                                                                               <option>ADMIN</option>-->
-<!--                                                                                <option>USER</option>-->
                                                                             </select>
                                                                         </div>
                                                                 </div>
@@ -277,11 +280,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="role" class="d-flex justify-content-center mb-0 font-weight-bold">Role</label>
-                                    <select required multiple class="form-control form-control-sm w-25 mx-auto" id="role" th:field="*{roles}"  size="2" >
-
+                                    <select  multiple class="form-control form-control-sm w-25 mx-auto" id="role" th:field="*{roles}"  size="2" >
                                         <option th:each="role : ${roleList}"
-                                                th:text="${role.getNoPrefix()}"
-                                                th:value="${role.id}">
+                                                th:value="${role.id}"
+                                                th:text="${role.getNoPrefix()}">
                                         </option>
                                     </select>
                                 </div>
