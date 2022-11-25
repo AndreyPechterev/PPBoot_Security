@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.hibernate.mapping.Collection;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @Controller
@@ -39,6 +39,7 @@ public class AdminController {
         return "admin";
     }
 
+
     @PostMapping()
     public String createUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
@@ -47,7 +48,9 @@ public class AdminController {
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
-        userService.changeUser(id, user);
+//        userService.changeUser(id, user);
+        userService.changeUser( user);
+
         return "redirect:/admin";
     }
 

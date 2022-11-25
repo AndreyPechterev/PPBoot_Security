@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
@@ -29,8 +30,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public User findUserById(Long id){
+        return userDao.findById(id).get();
+    }
+
+
     public User findByUsername(String username) {
-        return userDao.findByUsername(username);
+        return userDao.getUserByUsername(username);
     }
 
     @Override
@@ -48,7 +54,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     public User getAuthUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userDao.findByUsername(auth.getName());
+        return userDao.getUserByUsername(auth.getName());
     }
 
     public List<User> getAllUsers() {
@@ -57,7 +63,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Transactional
     public void saveUser(User user) {
-        User newUser = userDao.findByUsername(user.getUsername());
+        User newUser = userDao.getUserByUsername(user.getUsername());
         if (newUser == null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userDao.save(user);
@@ -66,21 +72,27 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         
     }
 
-    @Transactional
-    public void changeUser(Long id, User user) {
-        User newUser = userDao.findById(id).get();
-        newUser.setAge(user.getAge());
-        newUser.setEmail(user.getEmail());
-        newUser.setUsername(user.getUsername());
-        newUser.setSurname(user.getSurname());
-        newUser.setRoles(user.getRoles());
-        if (!newUser.getPassword().equals(user.getPassword())) {
-            newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        } else {
-            newUser.setPassword(user.getPassword());
-        }
 
-    }
+//    public void changeUser(Long id, User user) {
+        @Transactional
+        public void changeUser( User user) {
+//        User newUser = userDao.getUserByUsername(user.getUsername());
+//        newUser.setAge(user.getAge());
+//        newUser.setEmail(user.getEmail());
+//        newUser.setUsername(user.getUsername());
+//        newUser.setSurname(user.getSurname());
+//        newUser.setRoles(user.getRoles());
+//        if (!newUser.getPassword().equals(user.getPassword())) {
+//            newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+//        } else {
+//            newUser.setPassword(user.getPassword());
+//        }
+            User user2 = userDao.getById(user.getId());
+            if(!user2.getPassword().equals(user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+            userDao.saveAndFlush(user);
+        }
 
     @Transactional
     public void deleteUser(Long id) {

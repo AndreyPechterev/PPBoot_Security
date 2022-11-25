@@ -12,9 +12,12 @@ public interface UserService {
 
     User findByUsername(String username);
 
+    User findUserById(Long id);
+
     void deleteUser(Long id);
 
-    void changeUser(Long id, User user);
+//    void changeUser(Long id, User user);
+    void changeUser( User user);
 
     void saveUser(User user);
 

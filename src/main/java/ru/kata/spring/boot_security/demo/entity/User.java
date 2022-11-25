@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +20,7 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username", unique = true)
+    @Column(name = "username")
     private String username;
 
 
@@ -35,8 +37,10 @@ public class User implements UserDetails {
     private int age;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "users_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @Fetch(FetchMode.JOIN)
+    @JoinTable(name = "users_role", joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id",  referencedColumnName = "id"))
+//    @Fetch(FetchMode.JOIN)
+    @JsonIgnore
     private List<Role> roles;
 
     public User() {
@@ -60,7 +64,7 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-
+    @JsonGetter
     public List<Role> getRoles() {
         return roles;
     }
@@ -70,6 +74,7 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public List<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
@@ -83,21 +88,25 @@ public class User implements UserDetails {
         return username;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

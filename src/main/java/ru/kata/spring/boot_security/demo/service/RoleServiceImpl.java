@@ -28,7 +28,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> listRoles() {
-        return entityManager.createQuery("select r from Role r", Role.class).getResultList();
+//        return entityManager.createQuery("select r from Role r", Role.class).getResultList();
+        return roleDao.findAll();
     }
 
     public Role findByName(String name) {
